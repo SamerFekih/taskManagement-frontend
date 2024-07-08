@@ -1,52 +1,56 @@
-import { DataTable, DataTableFilterMeta } from "primereact/datatable";
-import { Column } from "primereact/column";
+import {
+  DataTable,
+  DataTableFilterMeta,
+  DataTableRowEditCompleteEvent,
+} from "primereact/datatable";
+import { Column, ColumnEditorOptions } from "primereact/column";
 import { useEffect, useState } from "react";
-import { GetTasks } from "../../../services/TasksService";
+import { GetTasks, UpdateTask } from "../../../services/TasksService";
 import { Tag } from "primereact/tag";
 import { Task } from "../../../interfaces/task/Task";
 import { TasksHeader } from "./TasksHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { setTasks } from "../../../store/TaskSlice";
 import { RootState } from "../../../interfaces/RootState";
+import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
+import { UpdateTaskRequest } from "../../../interfaces/task/UpdateTaskRequest";
+import { getCategorySeverity, getPrioritySeverity, getStatusSeverity } from "../../../utils/TasksTableUtils";
 export function TasksTable() {
+  const statuses = ["Pending", "In Progress", "Blocked", "Completed"];
+  const priorities = ["High", "Medium", "Low"];
   const [selectedTasks, setSelectedTasks] = useState<Task[] | null>(null);
-  const [filters, setFilters] = useState<DataTableFilterMeta>();
+  // const [filters, setFilters] = useState<DataTableFilterMeta>();
   const dispatch = useDispatch();
   const tasks = useSelector((state: RootState) => state.task);
+  const onRowEditComplete = (e: DataTableRowEditCompleteEvent) => {
+    let _tasks = [...tasks];
+    let { newData, index } = e;
 
-  const getStatusSeverity = (status: string) => {
-    switch (status.toUpperCase()) {
-      case "IN PROGRESS":
-        return "info";
-      case "PENDING":
-        return "warning";
-      case "BLOCKED":
-        return "danger";
-      case "COMPLETED":
-        return "success";
-      default:
-        return null;
-    }
+    _tasks[index] = newData as Task;
+    dispatch(setTasks(_tasks));
+
+    const { id, status, priority } = newData as UpdateTaskRequest;
+    const updatedTask: UpdateTaskRequest = {
+      id,
+      status,
+      priority,
+    };
+
+    UpdateTask(updatedTask)
+      .then((response) => {
+        alert("task updated successfully");
+      })
+      .catch((err) => {
+        console.error("API request error:", err);
+      });
   };
+  
   const statusBodyTemplate = (task: Task) => {
     return (
       <Tag value={task.status} severity={getStatusSeverity(task.status)}></Tag>
     );
   };
-  const getCategorySeverity = (category: string) => {
-    switch (category.toUpperCase()) {
-      case "WORK":
-        return "info";
-      case "PERSONAL":
-        return "warning";
-      case "BLOCKED":
-        return "danger";
-      case "COMPLETED":
-        return "success";
-      default:
-        return null;
-    }
-  };
+  
   const categoryBodyTemplate = (task: Task) => {
     return (
       <Tag
@@ -55,16 +59,7 @@ export function TasksTable() {
       ></Tag>
     );
   };
-  const getPrioritySeverity = (priority: string) => {
-    switch (priority.toUpperCase()) {
-      case "HIGH":
-        return "danger";
-      case "MEDIUM":
-        return "warning";
-      case "LOW":
-        return "info";
-    }
-  };
+  
   const priorityBodyTemplate = (task: Task) => {
     return (
       <Tag
@@ -82,6 +77,40 @@ export function TasksTable() {
         console.error("API request error:", err);
       });
   }, []);
+  const priorityEditor = (options: ColumnEditorOptions) => {
+    return (
+      <Dropdown
+        className="p-inputtext-sm"
+        value={options.value}
+        options={priorities}
+        itemTemplate={(option) => {
+          return (
+            <Tag value={option} severity={getPrioritySeverity(option)}></Tag>
+          );
+        }}
+        onChange={(e: DropdownChangeEvent) =>
+          options?.editorCallback?.(e.value)
+        }
+      />
+    );
+  };
+  const statusEditor = (options: ColumnEditorOptions) => {
+    return (
+      <Dropdown
+        className="p-inputtext-sm"
+        value={options.value}
+        options={statuses}
+        itemTemplate={(option) => {
+          return (
+            <Tag value={option} severity={getStatusSeverity(option)}></Tag>
+          );
+        }}
+        onChange={(e: DropdownChangeEvent) =>
+          options?.editorCallback?.(e.value)
+        }
+      />
+    );
+  };
   return (
     <div className="card" style={{ width: "80vw", overflowX: "auto" }}>
       <DataTable
@@ -89,24 +118,25 @@ export function TasksTable() {
           <TasksHeader
             selectedTasks={selectedTasks}
             setSelectedTasks={setSelectedTasks}
-            setFilters={setFilters}
+            // setFilters={setFilters}
           />
         }
         value={tasks}
         size="small"
         // filters={filters}
+        editMode="row"
         dataKey="id"
         showGridlines
         paginator
         rows={10}
         rowsPerPageOptions={[10, 25, 50]}
         selectionMode="checkbox"
-        // dragSelection
         selection={selectedTasks!}
         onSelectionChange={(e) => setSelectedTasks(e.value)}
         sortMode="single"
-        // sortField="assigned_time"
-        // sortOrder={-1}
+        onRowEditComplete={onRowEditComplete}
+        sortField="id"
+        sortOrder={1}
         tableStyle={{ maxWidth: "80vw", minWidth: "80vw", fontSize: "14px" }}
       >
         <Column
@@ -123,10 +153,21 @@ export function TasksTable() {
           field="priority"
           header="Priority"
           body={priorityBodyTemplate}
+          editor={(options) => priorityEditor(options)}
         />
         <Column field="dueDate" header="due Date" />
-        <Column field="status" header="Status" body={statusBodyTemplate} />
+        <Column
+          field="status"
+          header="Status"
+          body={statusBodyTemplate}
+          editor={(options) => statusEditor(options)}
+        />
         <Column field="description" header="Description" />
+        <Column
+          rowEditor
+          headerStyle={{ width: "10%", minWidth: "8rem" }}
+          bodyStyle={{ textAlign: "center" }}
+        />
       </DataTable>
     </div>
   );

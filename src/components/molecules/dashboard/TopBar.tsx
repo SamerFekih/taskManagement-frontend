@@ -28,7 +28,6 @@ export function TopBar() {
         overflow: "auto",
         py: 2,
         px: 2,
-        
 
         p: { xs: 3, sm: 5 },
       }}

@@ -18,6 +18,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import LogoutOutlined from "@ant-design/icons/lib/icons/LogoutOutlined";
 import { useRef, useState } from "react";
@@ -25,6 +26,9 @@ import { useRef, useState } from "react";
 export default function MenuItem() {
   const navigate = useNavigate();
 
+  const decodedToken = jwt_decode(sessionStorage.getItem("token"));
+  const firstname = decodedToken ? decodedToken.firstname : "";
+  const lastname = decodedToken ? decodedToken.lastname : "";
   const handleLogout = () => {
     navigate("/");
     sessionStorage.clear();
@@ -69,18 +73,14 @@ export default function MenuItem() {
           sx={{ p: 0.5 }}
         >
           <Avatar sx={{ width: 30, height: 30, background: "#2C3E5f" }}>
-            {/* {username && username.length > 0
-          ? username.charAt(0).toUpperCase()
-          : ""} */}
-            {"S"}
+            {firstname.charAt(0).toUpperCase()}
           </Avatar>
           <Typography
             fontSize={15}
             variant="subtitle1"
             style={{ color: "#34414B" }}
           >
-            {/* {username ? getDisplayName(username) : " "} */}
-            {"Samer Fekih"}
+            {firstname + " " + lastname}
           </Typography>
         </Stack>
       </ButtonBase>
@@ -107,9 +107,6 @@ export default function MenuItem() {
               width: 290,
               minWidth: 240,
               maxWidth: 290,
-              //   [mdTheme.breakpoints.down("md")]: {
-              //     maxWidth: 250,
-              //   },
             }}
           >
             <ClickAwayListener onClickAway={handleClose}>
@@ -130,15 +127,11 @@ export default function MenuItem() {
                             background: "#2C3E5f",
                           }}
                         >
-                          {/* {username && username.length > 0
-                          ? username.charAt(0).toUpperCase()
-                          : ""} */}
-                          {"S"}
+                          {firstname.charAt(0).toUpperCase()}
                         </Avatar>
                         <Stack>
                           <Typography fontSize={14}>
-                            {/* {username} */}
-                            {"Samer Fekih"}
+                            {firstname + " " + lastname}
                           </Typography>
                         </Stack>
                       </Stack>

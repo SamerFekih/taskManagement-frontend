@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
-import { VerifyToken } from "../../services/AuthService";
+import { VerifyToken } from "../services/AuthService";
 
 interface PrivateRouteProps {
   children: React.ReactNode;

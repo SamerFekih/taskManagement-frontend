@@ -23,8 +23,8 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 export const TasksHeader: React.FC<{
   selectedTasks: Task[] | null;
   setSelectedTasks: React.Dispatch<React.SetStateAction<Task[] | null>>;
-  setFilters: React.Dispatch<React.SetStateAction<DataTableFilterMeta>>;
-}> = ({ selectedTasks, setSelectedTasks, setFilters }) => {
+  // setFilters: React.Dispatch<React.SetStateAction<DataTableFilterMeta>>;
+}> = ({ selectedTasks, setSelectedTasks }) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState<string>("");
   const [severity, setSeverity] = useState<AlertColor | undefined>();

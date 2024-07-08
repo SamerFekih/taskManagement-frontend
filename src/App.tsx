@@ -2,8 +2,8 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Auth } from "./pages/auth";
 import { Dashboard } from "./pages/dashboard";
-import PrivateRoute from "./components/routes/PrivateRoute";
-import AuthRoute from "./components/routes/AuthRoute";
+import PrivateRoute from "./routes/PrivateRoute";
+import AuthRoute from "./routes/AuthRoute";
 
 const App: React.FC = () => {
   return (
