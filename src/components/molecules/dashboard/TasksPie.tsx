@@ -1,6 +1,6 @@
 import { pieArcLabelClasses, PieChart } from "@mui/x-charts/PieChart";
 import { useEffect, useState } from "react";
-import { GetTasksStatistics } from "../../../services/TasksStatisticsService";
+import { GetTasksStatusStatistics } from "../../../services/TasksStatisticsService";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../interfaces/RootState";
 import { Typography } from "@mui/material";
@@ -11,7 +11,7 @@ export function TasksPie() {
 
   useEffect(() => {
     if (tasks.length != 0) {
-      GetTasksStatistics()
+      GetTasksStatusStatistics()
         .then((response) => {
           const formattedData = Object.keys(response.data.statusCount).map(
             (key, index) => {
@@ -70,8 +70,8 @@ export function TasksPie() {
             fontSize: 12,
           },
         }}
-        height={200}
-        width={500}
+        height={300}
+        width={600}
       />
     </div>
   );

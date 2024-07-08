@@ -4,6 +4,7 @@ import { TopBar } from "../../molecules/dashboard/TopBar";
 import { Stack } from "@mui/material";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import { TasksPie } from "../../molecules/dashboard/TasksPie";
+import { TasksBarChart } from "../../molecules/dashboard/TasksBarChart";
 
 export function DashboardDisplay() {
   return (
@@ -23,10 +24,10 @@ export function DashboardDisplay() {
               <TasksPie />
             </Grid>
             <Grid item xs={12} md={6}>
-              <h1>DIAGRAM</h1>
+              <TasksBarChart />
             </Grid>
           </Grid>
-          <Grid container marginTop={5}>
+          <Grid container>
             <Grid item xs={12}>
               <TasksTable />
             </Grid>

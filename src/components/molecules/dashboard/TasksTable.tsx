@@ -14,7 +14,11 @@ import { setTasks } from "../../../store/TaskSlice";
 import { RootState } from "../../../interfaces/RootState";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { UpdateTaskRequest } from "../../../interfaces/task/UpdateTaskRequest";
-import { getCategorySeverity, getPrioritySeverity, getStatusSeverity } from "../../../utils/TasksTableUtils";
+import {
+  getCategorySeverity,
+  getPrioritySeverity,
+  getStatusSeverity,
+} from "../../../utils/TasksTableUtils";
 export function TasksTable() {
   const statuses = ["Pending", "In Progress", "Blocked", "Completed"];
   const priorities = ["High", "Medium", "Low"];
@@ -22,13 +26,15 @@ export function TasksTable() {
   // const [filters, setFilters] = useState<DataTableFilterMeta>();
   const dispatch = useDispatch();
   const tasks = useSelector((state: RootState) => state.task);
-  const onRowEditComplete = (e: DataTableRowEditCompleteEvent) => {
+  const onRowEditComplete = async (e: DataTableRowEditCompleteEvent) => {
     let _tasks = [...tasks];
     let { newData, index } = e;
-
-    _tasks[index] = newData as Task;
+    const taskIndex = _tasks.findIndex((task) => task.id === newData.id);
+    if (taskIndex !== -1) {
+      _tasks.splice(taskIndex, 1);
+    }
+    _tasks.push(newData as Task);
     dispatch(setTasks(_tasks));
-
     const { id, status, priority } = newData as UpdateTaskRequest;
     const updatedTask: UpdateTaskRequest = {
       id,
@@ -38,19 +44,19 @@ export function TasksTable() {
 
     UpdateTask(updatedTask)
       .then((response) => {
-        alert("task updated successfully");
+        // alert("task updated successfully");
       })
       .catch((err) => {
         console.error("API request error:", err);
       });
   };
-  
+
   const statusBodyTemplate = (task: Task) => {
     return (
       <Tag value={task.status} severity={getStatusSeverity(task.status)}></Tag>
     );
   };
-  
+
   const categoryBodyTemplate = (task: Task) => {
     return (
       <Tag
@@ -59,7 +65,7 @@ export function TasksTable() {
       ></Tag>
     );
   };
-  
+
   const priorityBodyTemplate = (task: Task) => {
     return (
       <Tag
@@ -127,9 +133,9 @@ export function TasksTable() {
         editMode="row"
         dataKey="id"
         showGridlines
-        paginator
-        rows={10}
-        rowsPerPageOptions={[10, 25, 50]}
+        // paginator
+        // rows={25}
+        // rowsPerPageOptions={[25, 50]}
         selectionMode="checkbox"
         selection={selectedTasks!}
         onSelectionChange={(e) => setSelectedTasks(e.value)}
