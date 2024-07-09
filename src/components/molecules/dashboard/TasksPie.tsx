@@ -52,16 +52,18 @@ export function TasksPie() {
       variant="outlined"
       sx={{
         padding: 1,
-        backgroundColor: "#f0f0f0",
+        backgroundColor: "#F9FAFB",
         boxShadow: 3,
-        minHeight: 400,
+        minHeight: "100%",
       }}
     >
       <CardContent>
         <Typography variant="h5" style={{ marginBottom: 10 }}>
           Task Status Distribution
         </Typography>
+
         <PieChart
+          height={250}
           series={[
             {
               data,
@@ -81,8 +83,6 @@ export function TasksPie() {
               fontSize: 12,
             },
           }}
-          height={300}
-          width={500}
         />
       </CardContent>
     </Card>

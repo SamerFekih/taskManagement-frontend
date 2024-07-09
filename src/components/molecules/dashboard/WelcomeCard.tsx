@@ -11,7 +11,7 @@ export function WelcomeCard() {
       variant="outlined"
       sx={{
         padding: 1,
-        backgroundColor: "#f0f0f0",
+        backgroundColor: "#F9FAFB",
         boxShadow: 3,
       }}
     >

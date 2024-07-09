@@ -121,6 +121,7 @@ export function TasksTable() {
   return (
     <Paper
       variant="outlined"
+      elevation={3}
       style={{
         overflowX: "auto",
         marginTop: 10,

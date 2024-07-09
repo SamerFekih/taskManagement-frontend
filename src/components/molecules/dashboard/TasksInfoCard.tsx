@@ -10,15 +10,13 @@ export function TasksInfoCard() {
       variant="outlined"
       sx={{
         padding: 1,
-        backgroundColor: "#f0f0f0",
+        backgroundColor: "#F9FAFB",
         boxShadow: 3,
         maxHeight: 95,
       }}
     >
       <CardContent>
-        <Typography variant="h5" style={{ marginBottom: 10 }}>
-          {tasks.length}
-        </Typography>
+        <Typography variant="h5">{tasks.length}</Typography>
         <Typography variant="body2" color="textSecondary">
           Number of tasks
         </Typography>
