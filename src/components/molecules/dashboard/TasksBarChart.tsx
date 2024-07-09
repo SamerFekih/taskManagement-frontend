@@ -2,7 +2,7 @@ import { pieArcLabelClasses, PieChart } from "@mui/x-charts/PieChart";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../interfaces/RootState";
-import { Typography } from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { GetTasksPriorityStatistics } from "../../../services/TasksStatisticsService";
 
@@ -31,37 +31,47 @@ export function TasksBarChart() {
   }, [tasks]);
 
   return (
-    <div
-      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+    <Card
+      variant="outlined"
+      sx={{
+        padding: 1,
+        backgroundColor: "#f0f0f0",
+        boxShadow: 3,
+        minHeight: 400,
+      }}
     >
-      <Typography variant="h5" style={{ marginBottom: 10 }}>
-        Task Priority Distribution by category
-      </Typography>
-      <BarChart
-        xAxis={[{ scaleType: "band", data: data.map((item) => item.category) }]}
-        series={[
-          {
-            data: data.map((item) => item.high),
-            stack: "A",
-            label: "High",
-            color: "#EF4444",
-          },
-          {
-            data: data.map((item) => item.medium),
-            stack: "B",
-            label: "Medium",
-            color: "#F97316",
-          },
-          {
-            data: data.map((item) => item.low),
-            stack: "C",
-            label: "Low ",
-            color: "#0EA5E9",
-          },
-        ]}
-        width={600}
-        height={350}
-      />
-    </div>
+      <CardContent>
+        <Typography variant="h5" style={{ marginBottom: 10 }}>
+          Task Priority Distribution by category
+        </Typography>
+        <BarChart
+          xAxis={[
+            { scaleType: "band", data: data.map((item) => item.category) },
+          ]}
+          series={[
+            {
+              data: data.map((item) => item.high),
+              stack: "A",
+              label: "High",
+              color: "#EF4444",
+            },
+            {
+              data: data.map((item) => item.medium),
+              stack: "B",
+              label: "Medium",
+              color: "#F97316",
+            },
+            {
+              data: data.map((item) => item.low),
+              stack: "C",
+              label: "Low ",
+              color: "#0EA5E9",
+            },
+          ]}
+          width={600}
+          height={300}
+        />
+      </CardContent>
+    </Card>
   );
 }

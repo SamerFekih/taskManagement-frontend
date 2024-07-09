@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { GetTasksStatusStatistics } from "../../../services/TasksStatisticsService";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../interfaces/RootState";
-import { Typography } from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 
 export function TasksPie() {
   const [data, setData] = useState([]);
@@ -48,31 +48,43 @@ export function TasksPie() {
     }
   }, [tasks]);
   return (
-    <div
-      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+    <Card
+      variant="outlined"
+      sx={{
+        padding: 1,
+        backgroundColor: "#f0f0f0",
+        boxShadow: 3,
+        minHeight: 400,
+      }}
     >
-      <Typography variant="h5" style={{ marginBottom: 10 }}>
-        Task Status Distribution
-      </Typography>
-      <PieChart
-        series={[
-          {
-            data,
-            arcLabel: (item) =>
-              `${((item.value * 100) / tasks.length).toFixed(2)}%`,
-            highlightScope: { faded: "global", highlighted: "item" },
-            faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
-          },
-        ]}
-        sx={{
-          [`& .${pieArcLabelClasses.root}`]: {
-            fill: "white",
-            fontSize: 12,
-          },
-        }}
-        height={300}
-        width={600}
-      />
-    </div>
+      <CardContent>
+        <Typography variant="h5" style={{ marginBottom: 10 }}>
+          Task Status Distribution
+        </Typography>
+        <PieChart
+          series={[
+            {
+              data,
+              arcLabel: (item) =>
+                `${((item.value * 100) / tasks.length).toFixed(2)}%`,
+              highlightScope: { faded: "global", highlighted: "item" },
+              faded: {
+                innerRadius: 30,
+                additionalRadius: -30,
+                color: "gray",
+              },
+            },
+          ]}
+          sx={{
+            [`& .${pieArcLabelClasses.root}`]: {
+              fill: "white",
+              fontSize: 12,
+            },
+          }}
+          height={300}
+          width={500}
+        />
+      </CardContent>
+    </Card>
   );
 }

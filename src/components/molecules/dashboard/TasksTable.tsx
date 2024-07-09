@@ -19,6 +19,7 @@ import {
   getPrioritySeverity,
   getStatusSeverity,
 } from "../../../utils/TasksTableUtils";
+import { Card, CardContent, Paper } from "@mui/material";
 export function TasksTable() {
   const statuses = ["Pending", "In Progress", "Blocked", "Completed"];
   const priorities = ["High", "Medium", "Low"];
@@ -118,63 +119,72 @@ export function TasksTable() {
     );
   };
   return (
-    <div className="card" style={{ width: "80vw", overflowX: "auto" }}>
-      <DataTable
-        header={
-          <TasksHeader
-            selectedTasks={selectedTasks}
-            setSelectedTasks={setSelectedTasks}
-            // setFilters={setFilters}
+    <Paper
+      variant="outlined"
+      style={{
+        overflowX: "auto",
+        marginTop: 10,
+      }}
+    >
+      <div className="card">
+        <DataTable
+          header={
+            <TasksHeader
+              selectedTasks={selectedTasks}
+              setSelectedTasks={setSelectedTasks}
+              // setFilters={setFilters}
+            />
+          }
+          value={tasks}
+          // filters={filters}
+          editMode="row"
+          dataKey="id"
+          showGridlines
+          paginator
+          rows={10}
+          rowsPerPageOptions={[10, 25, 50]}
+          selectionMode="checkbox"
+          selection={selectedTasks!}
+          onSelectionChange={(e) => setSelectedTasks(e.value)}
+          sortMode="single"
+          onRowEditComplete={onRowEditComplete}
+          sortField="id"
+          sortOrder={1}
+          tableStyle={{
+            fontSize: "14px",
+          }}
+        >
+          <Column
+            selectionMode="multiple"
+            headerStyle={{ width: "3rem" }}
+          ></Column>
+          <Column
+            field="category"
+            header="Category"
+            body={categoryBodyTemplate}
           />
-        }
-        value={tasks}
-        size="small"
-        // filters={filters}
-        editMode="row"
-        dataKey="id"
-        showGridlines
-        // paginator
-        // rows={25}
-        // rowsPerPageOptions={[25, 50]}
-        selectionMode="checkbox"
-        selection={selectedTasks!}
-        onSelectionChange={(e) => setSelectedTasks(e.value)}
-        sortMode="single"
-        onRowEditComplete={onRowEditComplete}
-        sortField="id"
-        sortOrder={1}
-        tableStyle={{ maxWidth: "80vw", minWidth: "80vw", fontSize: "14px" }}
-      >
-        <Column
-          selectionMode="multiple"
-          headerStyle={{ width: "3rem" }}
-        ></Column>
-        <Column
-          field="category"
-          header="Category"
-          body={categoryBodyTemplate}
-        />
-        <Column field="title" header="Title" />
-        <Column
-          field="priority"
-          header="Priority"
-          body={priorityBodyTemplate}
-          editor={(options) => priorityEditor(options)}
-        />
-        <Column field="dueDate" header="due Date" />
-        <Column
-          field="status"
-          header="Status"
-          body={statusBodyTemplate}
-          editor={(options) => statusEditor(options)}
-        />
-        <Column field="description" header="Description" />
-        <Column
-          rowEditor
-          headerStyle={{ width: "10%", minWidth: "8rem" }}
-          bodyStyle={{ textAlign: "center" }}
-        />
-      </DataTable>
-    </div>
+          <Column field="title" header="Title" />
+          <Column
+            field="priority"
+            header="Priority"
+            body={priorityBodyTemplate}
+            editor={(options) => priorityEditor(options)}
+          />
+          <Column field="dueDate" header="due Date" />
+          <Column
+            field="status"
+            header="Status"
+            body={statusBodyTemplate}
+            editor={(options) => statusEditor(options)}
+          />
+          <Column field="description" header="Description" />
+          <Column
+            rowEditor
+            headerStyle={{ width: "10%", minWidth: "8rem" }}
+            bodyStyle={{ textAlign: "center" }}
+          />
+        </DataTable>
+      </div>
+    </Paper>
   );
 }
