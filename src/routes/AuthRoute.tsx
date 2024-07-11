@@ -12,7 +12,7 @@ const AuthRoute: React.FC<AuthRouteProps> = ({ children }) => {
 
   useEffect(() => {
     const verifyToken = async () => {
-      if (sessionStorage.getItem("token") != null) {
+      if (localStorage.getItem("token") != null) {
         try {
           const response = await VerifyToken();
           // Assuming the API returns a successful response
@@ -20,12 +20,12 @@ const AuthRoute: React.FC<AuthRouteProps> = ({ children }) => {
             setAuthenticated(true);
           } else {
             setAuthenticated(false);
-            sessionStorage.clea();
+            localStorage.clea();
           }
         } catch (error) {
           console.error("Error verifying token:", error);
           setAuthenticated(false);
-          sessionStorage.clear();
+          localStorage.clear();
         } finally {
           setLoading(false);
         }

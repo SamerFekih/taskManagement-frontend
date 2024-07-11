@@ -51,7 +51,7 @@ export default function LoginCard() {
   const handleSubmit = async () => {
     try {
       const response = await Login(formData);
-      sessionStorage.setItem("token", response.data.accessToken);
+      localStorage.setItem("token", response.data.accessToken);
       navigate("/dashboard");
     } catch (err) {
       setErrors("Invalid credentials, try again.");

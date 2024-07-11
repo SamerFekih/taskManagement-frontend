@@ -3,7 +3,7 @@ import axios from "axios";
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export const GetTasksStatusStatistics = async () => {
-  const token = sessionStorage.getItem("token");
+  const token = localStorage.getItem("token");
   let config = {
     method: "get",
     url: `${apiUrl}/statistics/status`,
@@ -17,7 +17,7 @@ export const GetTasksStatusStatistics = async () => {
 };
 
 export const GetTasksPriorityStatistics = async () => {
-  const token = sessionStorage.getItem("token");
+  const token = localStorage.getItem("token");
   let config = {
     method: "get",
     url: `${apiUrl}/statistics/priority-per-category`,

@@ -5,7 +5,7 @@ import { UpdateTaskRequest } from "../interfaces/task/UpdateTaskRequest";
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export const GetTasks = async () => {
-  const token = sessionStorage.getItem("token");
+  const token = localStorage.getItem("token");
   let config = {
     method: "get",
     url: `${apiUrl}/task/getTasks`,
@@ -18,7 +18,7 @@ export const GetTasks = async () => {
   return axios.request(config);
 };
 export const AddTask = async (task: NewTaskRequest) => {
-  const token = sessionStorage.getItem("token");
+  const token = localStorage.getItem("token");
   let data = JSON.stringify(task);
   let config = {
     method: "post",
@@ -32,7 +32,7 @@ export const AddTask = async (task: NewTaskRequest) => {
   return axios.request(config);
 };
 export const UpdateTask = async (task: UpdateTaskRequest) => {
-  const token = sessionStorage.getItem("token");
+  const token = localStorage.getItem("token");
   let data = JSON.stringify(task);
   let config = {
     method: "put",
@@ -47,7 +47,7 @@ export const UpdateTask = async (task: UpdateTaskRequest) => {
 };
 
 export const DeleteTasks = async (taskIds: String[]) => {
-  const token = sessionStorage.getItem("token");
+  const token = localStorage.getItem("token");
   let data = { taskIds: taskIds };
   let config = {
     method: "delete",

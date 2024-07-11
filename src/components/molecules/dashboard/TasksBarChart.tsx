@@ -10,24 +10,26 @@ export function TasksBarChart() {
   const [data, setData] = useState([]);
   const tasks = useSelector((state: RootState) => state.task);
   useEffect(() => {
-    GetTasksPriorityStatistics()
-      .then((response) => {
-        const formattedData = Object.keys(response.data.priorityCount).map(
-          (category) => {
-            const categoryData = response.data.priorityCount[category];
-            return {
-              category,
-              high: categoryData.High ? categoryData.High[1] : 0,
-              medium: categoryData.Medium ? categoryData.Medium[1] : 0,
-              low: categoryData.Low ? categoryData.Low[1] : 0,
-            };
-          }
-        );
-        setData(formattedData);
-      })
-      .catch((err) => {
-        console.error("API request error:", err);
-      });
+    if (tasks.length != 0) {
+      GetTasksPriorityStatistics()
+        .then((response) => {
+          const formattedData = Object.keys(response.data.priorityCount).map(
+            (category) => {
+              const categoryData = response.data.priorityCount[category];
+              return {
+                category,
+                high: categoryData.High ? categoryData.High[1] : 0,
+                medium: categoryData.Medium ? categoryData.Medium[1] : 0,
+                low: categoryData.Low ? categoryData.Low[1] : 0,
+              };
+            }
+          );
+          setData(formattedData);
+        })
+        .catch((err) => {
+          console.error("API request error:", err);
+        });
+    }
   }, [tasks]);
 
   return (

@@ -35,7 +35,7 @@ export const VerifyToken = () => {
     url: `${apiUrl}/auth/verifyToken`,
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   };
   return axios.request(config);

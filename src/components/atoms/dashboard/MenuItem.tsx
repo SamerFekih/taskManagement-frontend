@@ -26,12 +26,12 @@ import { useRef, useState } from "react";
 export default function MenuItem() {
   const navigate = useNavigate();
 
-  const decodedToken = jwt_decode(sessionStorage.getItem("token"));
+  const decodedToken = jwt_decode(localStorage.getItem("token"));
   const firstname = decodedToken ? decodedToken.firstname : "";
   const lastname = decodedToken ? decodedToken.lastname : "";
   const handleLogout = () => {
     navigate("/");
-    sessionStorage.clear();
+    localStorage.clear();
   };
   const anchorRef = useRef<any>(null);
   const [anchorEl, setAnchorEl] = useState<boolean>(false);
